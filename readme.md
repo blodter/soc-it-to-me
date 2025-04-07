@@ -66,3 +66,13 @@ the response should look like:
     "mean_soc": 63.1354866027832
 }
 ```
+
+## Suggested Improvements
+- Add more error handling for invalid GeoTIFF files
+- Load the rasterized data into a cache for faster access and to avoid memory constraints for larger datasets
+- Allow POST requests to the stats endpoint, which accepts a bounding box of coordinates and returns stats for that bounding box
+- Add a frontend to visualize the data, such as a map and a method to select a location to get SOC stock values
+- If larger datasets or historical data is available, load the data into a database
+- Provide map visualizations such as histograms or heatmaps if historical data is available
+- On the frontend, make an admin management page to perform CRUD operations on the GeoTIFF files
+- Add testing for the API endpoints
