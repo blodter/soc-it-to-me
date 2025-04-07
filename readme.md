@@ -69,10 +69,12 @@ the response should look like:
 
 ## Suggested Improvements
 - Add more error handling for invalid GeoTIFF files
-- Load the rasterized data into a cache for faster access and to avoid memory constraints for larger datasets
+- The stats query assumes all GeoTIFFs are the same area - if they are not, the mean SOC stock value will be incorrect and the
+  mean calculation should be adjusted to the area of the data
+- Load the rasterized data into a cache for faster access on subsequent requests
+- Load the data into a database rather than in memory
 - Allow POST requests to the stats endpoint, which accepts a bounding box of coordinates and returns stats for that bounding box
 - Add a frontend to visualize the data, such as a map and a method to select a location to get SOC stock values
-- If larger datasets or historical data is available, load the data into a database
-- Provide map visualizations such as histograms or heatmaps if historical data is available
+- Provide heatmaps if historical data is available and charts/histograms of the data
 - On the frontend, make an admin management page to perform CRUD operations on the GeoTIFF files
 - Add testing for the API endpoints
