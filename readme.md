@@ -9,9 +9,6 @@ The application is built using the following technologies:
 - **GeoTIFF Raster Processing**: Rasterio
 - **Containerization**: Docker/Docker Compose
 
-While there are a lot of components for such a small application, I believed it to be important to showcase my expertise among
-these technologies and my ability to stand up a full stack containerized application in a short amount of time.
-
 
 ## Initialization
 To get started, all that is needed to run this application is docker and docker-compose.
@@ -36,7 +33,7 @@ To use the API, two endpoints are available:
  - `http://localhost:8000/soc-stock`
  - `http://localhost:8000/stats`
 
-### `http://localhost:8000/soc-stock`
+### GET `http://localhost:8000/soc-stock`
 This endpoint accepts a GET request with the following parameters:
 - `lat`: Latitude of the location (required value between -90 and 90) (required)
 - `lon`: Longitude of the location (required value between -180 and 180)
@@ -58,7 +55,7 @@ Error handling has been implemented for the following cases:
 - If the latitude and longitude are not within the bounds of any loaded GeoTIFF file, a 400 Not Found error will be returned with a message indicating the location is not found in any loaded files.
 - If the band does not contain data at the given location, a 400 or 404 error will be returned with a message.
 
-### `http://localhost:8000/stats`
+### GET `http://localhost:8000/stats`
 This endpoint accepts a GET request with no parameters, and returns a JSON object of the aggregates stats from the app's state -
 the response should look like:
 
