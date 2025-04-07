@@ -1,0 +1,17 @@
+name: soc-it-to-me
+
+networks:
+  app:
+
+services:
+  backend:
+    build:
+      context: ./backend
+    networks:
+      - app
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./backend:/app
