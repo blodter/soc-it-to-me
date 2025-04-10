@@ -50,9 +50,12 @@ The response will be a JSON object containing the SOC stock value for the given 
 file containing the SOC stock value (since multiple files may be loaded into the app's state).
 
 Error handling has been implemented for the following cases:
-- If the latitude and/or longitude is not provided, a 422 Unprocessable Entity error will be returned with a message indicating the missing parameter.
-- If the latitude and/or longitude is out of range, a 422 Unprocessable Entity error will be returned with a message indicating the invalid value.
-- If the latitude and longitude are not within the bounds of any loaded GeoTIFF file, a 400 Not Found error will be returned with a message indicating the location is not found in any loaded files.
+- If the latitude and/or longitude is not provided, a 422 Unprocessable Entity error will be returned with a message indicating 
+  the missing parameter.
+- If the latitude and/or longitude is out of range, a 422 Unprocessable Entity error will be returned with a message indicating
+  the invalid value.
+- If the latitude and longitude are not within the bounds of any loaded GeoTIFF file, a 400 Not Found error will be returned
+  with a message indicating the location is not found in any loaded files.
 - If the band does not contain data at the given location, a 400 or 404 error will be returned with a message.
 
 ### GET `http://localhost:8000/stats`
@@ -68,13 +71,32 @@ the response should look like:
 ```
 
 ## Suggested Improvements
-- Add more error handling for invalid GeoTIFF files
-- The stats query assumes all GeoTIFFs are the same area - if they are not, the mean SOC stock value will be incorrect and the
-  mean calculation should be adjusted to the area of the data
-- Load the rasterized data into a cache for faster access on subsequent requests
-- Load the data into a database rather than in memory
-- Allow POST requests to the stats endpoint, which accepts a bounding box of coordinates and returns stats for that bounding box
-- Add a frontend to visualize the data, such as a map and a method to select a location to get SOC stock values
-- Provide heatmaps if historical data is available and charts/histograms of the data
-- On the frontend, make an admin management page to perform CRUD operations on the GeoTIFF files
-- Add testing for the API endpoints
+### Data Ingestion and Preprocessing
+- Use Flyte to orchestrate the data loading and processing.
+- During data preprocessing, reproject the data to a common coordinate system (EPSG:4326).
+- Mosaic raster datasets together if multiple datasets are available for adjacent areas.
+- Convert the processed data into a format compatible with Zarr.
+- Register the processed data in a STAC catalog.
+
+### Data processing and querying
+- Use a service like Dask to parallelize the data processing and querying.
+- Store each datasets bounds along with a spatial index for faster querying.
+- Use Dask to perform the stats calculations.
+- Allow querying of the data by bounding box, and return the stats for that bounding box (such as min, max, sum, mean, etc.).
+- Use PostGIS to store the data in a database, and use SQL queries to perform bounding box queries and stats calculations.
+- Add a caching layer (Redis) to store frequently accessed data and stats.
+
+### Frontend
+- Use a frontend framework like React or Angular to build a user interface for the application.
+- Include a mapping library such as Mapbox to visualize the data on a map.
+- Provide tools to select points, polygons, or bounding boxes on the map, and query the data for those areas.
+- Provide heatmaps if historical data is available and charts/histograms for the data alongside the map.
+- Make an admin management platform to allow a user to perform CRUD operations on the data.
+
+### Reliability and CI/CD
+- Use Kubernetes to orchestrate containerized application rather than Docker Compose.
+- Implement unit tests for the application using a library like pytest.
+- Use e2e testing tools like Cypress or Selenium to test the frontend and backend together.
+- Use a CI/CD tool like GitHub Actions to automate the build and deployment process.
+- Add more robust logging and error handling.
+- Host the application on a cloud provider like AWS or GCP.
